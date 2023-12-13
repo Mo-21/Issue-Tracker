@@ -8,8 +8,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { createIssueSchema } from "@/app/createIssueSchema";
+import { createIssueSchema } from "@/app/validationSchemas";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import Spinner from "@/app/components/Spinner";
 
 type IssueForm = z.infer<typeof createIssueSchema>;
 
@@ -23,6 +24,8 @@ const NewIssuePage = () => {
     resolver: zodResolver(createIssueSchema),
   });
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const router = useRouter();
 
   return (
@@ -36,11 +39,12 @@ const NewIssuePage = () => {
         className="space-y-4"
         onSubmit={handleSubmit(async (data) => {
           try {
+            setIsSubmitting(true);
             await axios.post("/api/issues", data);
             router.push("/issues");
           } catch (error) {
             setError("Something went wrong");
-            console.log(error);
+            setIsSubmitting(false);
           }
         })}
       >
@@ -56,7 +60,7 @@ const NewIssuePage = () => {
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button>Submit Issue</Button>
+        <Button disabled={isSubmitting}>Submit Issue {isSubmitting && <Spinner />}</Button>
       </form>
     </div>
   );

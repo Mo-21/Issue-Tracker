@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={inter.variable}>
         <Theme accentColor="green" radius="large">
           <Navbar />
-          <main className="p-2">{children}</main>
+          <main className="p-5">{children}</main>
         </Theme>
       </body>
     </html>

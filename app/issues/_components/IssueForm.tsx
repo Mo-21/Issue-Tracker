@@ -12,12 +12,9 @@ import { issueSchema } from "@/app/validationSchemas";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
 import { Issue } from "@prisma/client";
+import SimpleMDE from "react-simplemde-editor";
 
 type IssueFormType = z.infer<typeof issueSchema>;
-
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const {

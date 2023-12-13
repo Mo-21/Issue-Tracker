@@ -28,6 +28,17 @@ const NewIssuePage = () => {
 
   const router = useRouter();
 
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      setIsSubmitting(true);
+      await axios.post("/api/issues", data);
+      router.push("/issues");
+    } catch (error) {
+      setError("Something went wrong");
+      setIsSubmitting(false);
+    }
+  });
+
   return (
     <div className="space-y-4 max-w-xl">
       {error && (
@@ -35,19 +46,7 @@ const NewIssuePage = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        className="space-y-4"
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            setIsSubmitting(true);
-            await axios.post("/api/issues", data);
-            router.push("/issues");
-          } catch (error) {
-            setError("Something went wrong");
-            setIsSubmitting(false);
-          }
-        })}
-      >
+      <form className="space-y-4" onSubmit={onSubmit}>
         <TextField.Root>
           <TextField.Input placeholder="Title" {...register("title")} />
         </TextField.Root>
@@ -60,7 +59,9 @@ const NewIssuePage = () => {
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button disabled={isSubmitting}>Submit Issue {isSubmitting && <Spinner />}</Button>
+        <Button disabled={isSubmitting}>
+          Submit Issue {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );

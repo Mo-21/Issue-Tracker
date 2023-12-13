@@ -2,6 +2,8 @@ import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import { prisma } from "@/prisma/client";
 import { Card, Flex, Heading } from "@radix-ui/themes";
 import ReactMarkdown from "react-markdown";
+import delay from "delay";
+import { notFound } from "next/navigation";
 
 interface Props {
   params: { id: string };
@@ -13,6 +15,10 @@ const IssueDetailsPage = async ({ params }: Props) => {
       id: params.id,
     },
   });
+
+  if (!issue) notFound();
+
+  await delay(3000);
 
   return (
     <div>

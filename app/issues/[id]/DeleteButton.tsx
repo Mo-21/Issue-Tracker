@@ -3,7 +3,6 @@ import Spinner from "@/app/components/Spinner";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -20,6 +19,7 @@ const DeleteButton = ({ issueId }: { issueId: string }) => {
       router.push("/issues/list");
       router.refresh();
     } catch (error) {
+      console.log(error);
       setError(true);
     }
   };
@@ -66,7 +66,7 @@ const DeleteButton = ({ issueId }: { issueId: string }) => {
                 variant="soft"
                 color="gray"
               >
-                Cancel
+                Ok
               </Button>
             </AlertDialog.Action>
           </Flex>

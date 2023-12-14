@@ -11,3 +11,9 @@
     --foreground-rgb: 255, 255, 255;
   }
 }
+
+@layer utilities {
+  .nav-link {
+    @apply text-black hover:text-zinc-600 transition-colors text-lg font-bold;
+  }
+}

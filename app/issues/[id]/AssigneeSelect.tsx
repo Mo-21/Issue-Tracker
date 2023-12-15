@@ -16,7 +16,7 @@ const AssigneeSelect = () => {
   }, []);
   return (
     <Select.Root>
-      <Select.Trigger content="Assign Ticket" />
+      <Select.Trigger placeholder="Assign Ticket" />
       <Select.Content>
         <Select.Group>
           {users.map((user) => (

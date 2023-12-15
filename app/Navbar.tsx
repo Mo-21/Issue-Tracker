@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
+import "react-loading-skeleton/dist/skeleton.css";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { CgSearchFound } from "react-icons/cg";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
 import { Avatar, Box, Text, DropdownMenu, Flex } from "@radix-ui/themes";
+import Skeleton from "react-loading-skeleton";
 
 const Navbar = () => {
   return (
@@ -25,7 +27,7 @@ const Navbar = () => {
 const Dropdown = () => {
   const { status, data: session } = useSession();
 
-  if (status === "loading") return <div>Loading...</div>;
+  if (status === "loading") return <Skeleton width="2rem" />;
   if (status === "unauthenticated")
     return (
       <Link className="nav-link" href="/api/auth/signin">
@@ -34,33 +36,29 @@ const Dropdown = () => {
     );
 
   return (
-    <>
-      {status === "authenticated" && (
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
-            <Avatar
-              size="3"
-              radius="full"
-              src={session.user?.image!}
-              fallback="?"
-              className="hover:cursor-pointer"
-              referrerPolicy="no-referrer"
-            />
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content>
-            <DropdownMenu.Label>
-              <Text>{session.user?.name}</Text>
-            </DropdownMenu.Label>
-            <DropdownMenu.Label>
-              <Text>{session.user?.email}</Text>
-            </DropdownMenu.Label>
-            <DropdownMenu.Item>
-              <Link href="/api/auth/signout">Logout</Link>
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      )}
-    </>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <Avatar
+          size="3"
+          radius="full"
+          src={session!.user?.image!}
+          fallback="?"
+          className="hover:cursor-pointer"
+          referrerPolicy="no-referrer"
+        />
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Label>
+          <Text>{session!.user?.name}</Text>
+        </DropdownMenu.Label>
+        <DropdownMenu.Label>
+          <Text>{session!.user?.email}</Text>
+        </DropdownMenu.Label>
+        <DropdownMenu.Item>
+          <Link href="/api/auth/signout">Logout</Link>
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   );
 };
 

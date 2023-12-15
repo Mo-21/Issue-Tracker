@@ -1,12 +1,13 @@
 "use client";
 import "react-loading-skeleton/dist/skeleton.css";
-import { User } from "@prisma/client";
+import { Issue, User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
+import toast, { Toaster } from "react-hot-toast";
 
-const AssigneeSelect = () => {
+const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   const {
     data: users,
     error,
@@ -21,18 +22,33 @@ const AssigneeSelect = () => {
   if (error) return null;
 
   return (
-    <Select.Root>
-      <Select.Trigger placeholder="Assign Ticket" />
-      <Select.Content>
-        <Select.Group>
-          {users?.map((user) => (
-            <Select.Item key={user.id} value={user.id}>
-              {user.name}
-            </Select.Item>
-          ))}
-        </Select.Group>
-      </Select.Content>
-    </Select.Root>
+    <>
+      <Select.Root
+        defaultValue={issue.assignedToUserId || "unassigned"}
+        onValueChange={(userId) => {
+          axios
+            .patch("/api/issues/" + issue.id, {
+              assignedToUserId: userId === "unassigned" ? null : userId,
+            })
+            .catch(() => {
+              toast.error("Failed to assign ticket");
+            });
+        }}
+      >
+        <Select.Trigger placeholder="Assign Ticket" />
+        <Select.Content>
+          <Select.Group>
+            <Select.Item value="unassigned">Unassigned</Select.Item>
+            {users?.map((user) => (
+              <Select.Item key={user.id} value={user.id}>
+                {user.name}
+              </Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+      <Toaster />
+    </>
   );
 };
 

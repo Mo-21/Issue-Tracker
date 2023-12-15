@@ -1,8 +1,10 @@
 "use client";
+import "react-loading-skeleton/dist/skeleton.css";
 import { User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Skeleton from "react-loading-skeleton";
 
 const AssigneeSelect = () => {
   const {
@@ -14,6 +16,9 @@ const AssigneeSelect = () => {
     queryFn: () => axios.get("/api/users").then((res) => res.data),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
+
+  if (isLoading) return <Skeleton />;
+  if (error) return null;
 
   return (
     <Select.Root>

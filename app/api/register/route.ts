@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(validation.error.format(), { status: 400 });
   }
 
-  const { email, password } = body;
+  const { email, password, name } = body;
 
   const user = await prisma.user.findUnique({
     where: {
@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
   const newUser = await prisma.user.create({
     data: {
       email,
+      name,
       hashedPassword,
     },
   });

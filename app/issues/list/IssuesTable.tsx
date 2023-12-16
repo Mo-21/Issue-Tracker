@@ -1,6 +1,6 @@
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import { Issue, Status } from "@prisma/client";
-import { ArrowUpIcon } from "@radix-ui/react-icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import { Table, Flex, Link } from "@radix-ui/themes";
 import NextLink from "next/link";
 import React from "react";
@@ -16,12 +16,23 @@ const IssuesTable = ({ issues, searchParams }: Props) => {
               className={column.className}
             >
               <Flex gap="2">
-                {column.value === searchParams.orderBy && <ArrowUpIcon />}
+                {column.value === searchParams.orderBy ? (
+                  searchParams.orderDirection === "asc" ? (
+                    <ArrowUpIcon />
+                  ) : (
+                    <ArrowDownIcon />
+                  )
+                ) : null}
                 <NextLink
                   href={{
                     query: {
                       ...searchParams,
                       orderBy: column.value,
+                      orderDirection:
+                        column.value === searchParams.orderBy &&
+                        searchParams.orderDirection === "asc"
+                          ? "desc"
+                          : "asc",
                     },
                   }}
                 >
@@ -80,6 +91,7 @@ export const columnValue = columns.map((column) => column.value);
 export interface IssueSearchParams {
   status: Status;
   orderBy: keyof Issue;
+  orderDirection: "asc" | "desc";
   page: string;
 }
 

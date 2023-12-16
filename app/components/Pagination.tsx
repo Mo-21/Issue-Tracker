@@ -28,10 +28,7 @@ const Pagination = ({ itemCount, currentPage, pageSize }: Props) => {
     router.push("?" + params.toString());
   };
   return (
-    <Flex gap="2" align="center">
-      <Text>
-        Page {currentPage} of {pageCount}
-      </Text>
+    <Flex gap="2" align="center" justify="center">
       <Button
         onClick={() => {
           changePage(1);
@@ -50,6 +47,9 @@ const Pagination = ({ itemCount, currentPage, pageSize }: Props) => {
       >
         <ArrowLeftIcon />
       </Button>
+      <Text>
+        Page {currentPage} of {pageCount}
+      </Text>
       <Button
         onClick={() => {
           changePage(currentPage + 1);

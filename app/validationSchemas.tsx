@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { RegistrationFormType } from "./registration/page";
 
 export const patchIssueSchema = z.object({
   title: z.string().min(1, "Title is Required").max(255).optional(),
@@ -16,21 +17,33 @@ export const patchIssueSchema = z.object({
 });
 
 export const registerSchema = z.object({
+  name: z.string().min(1, "Name is Required").max(255),
   email: z.string().email("Invalid email").min(1, "Email is Required"),
   password: z
     .string()
     .min(1, "Password is Required")
     .min(8, "Password must be at least 8 characters long")
-    .includes(String(/[0-9]/), {
+    .refine((value) => /\d/.test(value), {
       message: "Password must contain at least one number",
     })
-    .includes(String(/[a-z]/), {
+    .refine((value) => /[a-z]/.test(value), {
       message: "Password must contain at least one lowercase letter",
     })
-    .includes(String(/[A-Z]/), {
+    .refine((value) => /[A-Z]/.test(value), {
       message: "Password must contain at least one uppercase letter",
     })
-    .includes(String(/[^a-zA-Z\d]/), {
+    .refine((value) => /[^a-zA-Z\d]/.test(value), {
       message: "Password must contain at least one special character",
     }),
+  passwordConfirmation: z.string().min(1, "Password Confirmation is Required"),
 });
+
+export const validatePasswords = (data: RegistrationFormType) => {
+  try {
+    registerSchema.parse(data);
+    if (data.password !== data.passwordConfirmation) return false;
+    return true;
+  } catch (error) {
+    console.log(error);
+  }
+};

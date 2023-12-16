@@ -30,9 +30,14 @@ const Dropdown = () => {
   if (status === "loading") return <Skeleton width="2rem" />;
   if (status === "unauthenticated")
     return (
-      <Link className="nav-link" href="/api/auth/signin">
-        Login
-      </Link>
+      <>
+        <Link className="nav-link mx-3" href="/api/auth/signin">
+          Login
+        </Link>
+        <Link className="nav-link" href="/registration">
+          Sign-up
+        </Link>
+      </>
     );
 
   return (

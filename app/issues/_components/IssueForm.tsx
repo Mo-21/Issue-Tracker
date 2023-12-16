@@ -8,13 +8,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { issueSchema } from "@/app/validationSchemas";
+import { patchIssueSchema } from "@/app/validationSchemas";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
 import { Issue } from "@prisma/client";
 import SimpleMDE from "react-simplemde-editor";
 
-type IssueFormType = z.infer<typeof issueSchema>;
+type IssueFormType = z.infer<typeof patchIssueSchema>;
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const {
@@ -23,7 +23,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IssueFormType>({
-    resolver: zodResolver(issueSchema),
+    resolver: zodResolver(patchIssueSchema),
   });
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);

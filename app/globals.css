@@ -16,4 +16,8 @@
   .nav-link {
     @apply text-black hover:text-zinc-600 transition-colors text-lg font-bold;
   }
+
+  .registration-input {
+    @apply block w-full p-2 border border-gray-300 rounded-md;
+  }
 }

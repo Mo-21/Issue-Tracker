@@ -1,3 +1,4 @@
+"use client";
 import { Callout } from "@radix-ui/themes";
 import React, { PropsWithChildren } from "react";
 

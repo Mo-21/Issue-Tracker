@@ -8,6 +8,8 @@ import classNames from "classnames";
 import { useSession } from "next-auth/react";
 import { Avatar, Box, Text, DropdownMenu, Flex } from "@radix-ui/themes";
 import Skeleton from "react-loading-skeleton";
+import defaultAvatar from "../public/default.png";
+import Image from "next/image";
 
 const Navbar = () => {
   return (
@@ -43,13 +45,13 @@ const Dropdown = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Avatar
-          size="3"
-          radius="full"
-          src={session!.user?.image!}
-          fallback="?"
-          className="hover:cursor-pointer"
+        <Image
+          src={session!.user?.image! ? session!.user?.image! : defaultAvatar}
+          alt="avatar"
+          className="w-9 border rounded-full hover:cursor-pointer"
           referrerPolicy="no-referrer"
+          width={36}
+          height={36}
         />
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>

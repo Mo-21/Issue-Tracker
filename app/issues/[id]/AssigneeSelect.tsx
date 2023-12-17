@@ -6,6 +6,8 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useUsers } from "../services/useUsers";
+
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   const { data: users, error, isLoading } = useUsers();
@@ -47,12 +49,5 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     </>
   );
 };
-
-const useUsers = () =>
-  useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/users").then((res) => res.data),
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
 
 export default AssigneeSelect;

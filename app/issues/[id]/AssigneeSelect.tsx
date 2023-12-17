@@ -1,6 +1,6 @@
 "use client";
 import { Issue, User } from "@prisma/client";
-import { Select } from "@radix-ui/themes";
+import { Select, Text } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
@@ -28,7 +28,9 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
         defaultValue={issue.assignedToUserId || "unassigned"}
         onValueChange={onValueChange}
       >
-        <Select.Trigger placeholder="Assign Ticket" />
+        <Select.Trigger>
+          <Text>Assign ticket</Text>
+        </Select.Trigger>
         <Select.Content>
           <Select.Group>
             <Select.Item value="unassigned">Unassigned</Select.Item>

@@ -5,7 +5,7 @@ import {
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 } from "@radix-ui/react-icons";
-import { Button, Flex, Text } from "@radix-ui/themes";
+import { Button, Flex, Select, Text } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
@@ -22,16 +22,18 @@ const Pagination = ({ itemCount, currentPage, pageSize }: Props) => {
   const pageCount = Math.ceil(itemCount / pageSize);
   if (pageCount <= 1) return null;
 
-  const changePage = (page: number) => {
+  const updateParam = (page: number, pageSize: string) => {
     const params = new URLSearchParams(searchParams);
+    params.set("pageSize", pageSize);
     params.set("page", page.toString());
     router.push("?" + params.toString());
   };
+
   return (
     <Flex gap="2" align="center" justify="center">
       <Button
         onClick={() => {
-          changePage(1);
+          updateParam(1, pageSize.toString());
         }}
         variant="outline"
         disabled={currentPage === 1}
@@ -40,7 +42,7 @@ const Pagination = ({ itemCount, currentPage, pageSize }: Props) => {
       </Button>
       <Button
         onClick={() => {
-          changePage(currentPage - 1);
+          updateParam(currentPage - 1, pageSize.toString());
         }}
         variant="solid"
         disabled={currentPage === 1}
@@ -52,7 +54,7 @@ const Pagination = ({ itemCount, currentPage, pageSize }: Props) => {
       </Text>
       <Button
         onClick={() => {
-          changePage(currentPage + 1);
+          updateParam(currentPage + 1, pageSize.toString());
         }}
         variant="solid"
         disabled={currentPage === pageCount}
@@ -61,13 +63,26 @@ const Pagination = ({ itemCount, currentPage, pageSize }: Props) => {
       </Button>
       <Button
         onClick={() => {
-          changePage(pageCount);
+          updateParam(pageCount, pageSize.toString());
         }}
         variant="outline"
         disabled={currentPage === pageCount}
       >
         <DoubleArrowRightIcon />
       </Button>
+      <Select.Root
+        defaultValue="10"
+        onValueChange={(value) => {
+          updateParam(currentPage, value);
+        }}
+      >
+        <Select.Trigger variant="soft" />
+        <Select.Content>
+          <Select.Item value="100">All</Select.Item>
+          <Select.Item value="10">10</Select.Item>
+          <Select.Item value="20">20</Select.Item>
+        </Select.Content>
+      </Select.Root>
     </Flex>
   );
 };

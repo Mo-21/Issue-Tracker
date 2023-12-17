@@ -41,4 +41,17 @@ const IssueDetailsPage = async ({ params }: Props) => {
   );
 };
 
+export const generateMetadata = async ({ params }: Props) => {
+  const issue = await prisma.issue.findUnique({
+    where: {
+      id: params.id,
+    },
+  });
+
+  return {
+    title: `Issue Tracker - ${issue?.title}`,
+    description: `The issue page for the issue tracker`,
+  };
+};
+
 export default IssueDetailsPage;

@@ -92,6 +92,7 @@ export interface IssueSearchParams {
   status: Status;
   orderBy: keyof Issue;
   orderDirection: "asc" | "desc";
+  pageSize: string;
   page: string;
 }
 

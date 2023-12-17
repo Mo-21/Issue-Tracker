@@ -104,6 +104,7 @@ interface Props {
 
 export interface IssueSearchParams {
   status: Status;
+  assignee: string;
   orderBy: keyof IssueWithUser;
   orderDirection: "asc" | "desc";
   pageSize: string;

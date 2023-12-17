@@ -1,7 +1,7 @@
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
 import { Issue, Status } from "@prisma/client";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
-import { Table, Flex, Link } from "@radix-ui/themes";
+import { Table, Flex, Link, Button } from "@radix-ui/themes";
 import NextLink from "next/link";
 import React from "react";
 
@@ -23,6 +23,7 @@ const IssuesTable = ({ issues, searchParams }: Props) => {
                     <ArrowDownIcon />
                   )
                 ) : null}
+
                 <NextLink
                   href={{
                     query: {
@@ -58,6 +59,9 @@ const IssuesTable = ({ issues, searchParams }: Props) => {
             <Table.Cell className="hidden md:table-cell">
               {issue.createdAt.toDateString()}
             </Table.Cell>
+            <Table.Cell className="hidden md:table-cell">
+              {issue.assignedToUser?.name || "Unassigned"}
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>
@@ -67,7 +71,7 @@ const IssuesTable = ({ issues, searchParams }: Props) => {
 
 const columns: {
   label: string;
-  value: keyof Issue;
+  value: keyof IssueWithUser;
   className?: string;
 }[] = [
   {
@@ -84,21 +88,37 @@ const columns: {
     value: "createdAt",
     className: "hidden md:table-cell",
   },
+  {
+    label: "Assigned to",
+    value: "assignedToUser",
+    className: "hidden md:table-cell",
+  },
 ];
 
 export const columnValue = columns.map((column) => column.value);
 
+interface Props {
+  issues: IssueWithUser[];
+  searchParams: IssueSearchParams;
+}
+
 export interface IssueSearchParams {
   status: Status;
-  orderBy: keyof Issue;
+  orderBy: keyof IssueWithUser;
   orderDirection: "asc" | "desc";
   pageSize: string;
   page: string;
 }
 
-interface Props {
-  issues: Issue[];
-  searchParams: IssueSearchParams;
+interface IssueWithUser extends Issue {
+  assignedToUser: {
+    id: string;
+    name: string | null;
+    email: string | null;
+    emailVerified: Date | null;
+    hashedPassword: string | null;
+    image: string | null;
+  } | null;
 }
 
 export default IssuesTable;

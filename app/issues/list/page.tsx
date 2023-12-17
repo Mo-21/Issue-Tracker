@@ -16,7 +16,9 @@ const IssuesPage = async ({ searchParams }: IssuesPageProps) => {
     : undefined;
 
   const orderBy = columnValue.includes(searchParams.orderBy)
-    ? { [searchParams.orderBy]: searchParams.orderDirection }
+    ? searchParams.orderBy === "assignedToUser"
+      ? { assignedToUser: { name: searchParams.orderDirection } }
+      : { [searchParams.orderBy]: searchParams.orderDirection }
     : undefined;
 
   const page = parseInt(searchParams.page) || 1;
@@ -29,6 +31,9 @@ const IssuesPage = async ({ searchParams }: IssuesPageProps) => {
     orderBy,
     skip: (page - 1) * pageSize,
     take: pageSize,
+    include: {
+      assignedToUser: true,
+    },
   });
 
   const itemCount = await prisma.issue.count({

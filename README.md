@@ -14,7 +14,6 @@ This project is a full-stack web application that allows users to create, manage
 - Users can assign issues to themselves or other collaborators.
 - Users can filter and sort issues by name, status, and creation date.
 - Can be used without registering with limited actions.
-- Error tracking with Sentry
 
 ## Usage
 

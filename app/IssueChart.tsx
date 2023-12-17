@@ -2,16 +2,18 @@
 import { ResponsiveContainer, Bar, BarChart, XAxis, YAxis } from "recharts";
 
 interface Props {
-  open: number;
-  inProgress: number;
-  closed: number;
+  props: {
+    open: number;
+    inProgress: number;
+    closed: number;
+  };
 }
 
-const IssueChart = ({ closed, inProgress, open }: Props) => {
+const IssueChart = ({ props }: Props) => {
   const data = [
-    { label: "open", number: open },
-    { label: "closed", number: closed },
-    { label: "inProgress", number: inProgress },
+    { label: "Open", number: props.open },
+    { label: "Closed", number: props.closed },
+    { label: "In Progress", number: props.inProgress },
   ];
   return (
     <ResponsiveContainer width="100%" height={300}>

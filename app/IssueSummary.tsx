@@ -9,20 +9,26 @@ interface IssueStatusContainerProps {
 }
 
 interface Props {
-  open: number;
-  inProgress: number;
-  closed: number;
+  props: {
+    open: number;
+    inProgress: number;
+    closed: number;
+  };
 }
 
-const IssueSummary = ({ closed, inProgress, open }: Props) => {
+const IssueSummary = ({ props }: Props) => {
   const issueStatusContainer: IssueStatusContainerProps[] = [
-    { label: "Open Issues", value: open, status: "OPEN" },
-    { label: "In Progress Issues", value: inProgress, status: "IN_PROGRESS" },
-    { label: "Closed Issues", value: closed, status: "CLOSED" },
+    { label: "Open Issues", value: props.open, status: "OPEN" },
+    {
+      label: "In Progress Issues",
+      value: props.inProgress,
+      status: "IN_PROGRESS",
+    },
+    { label: "Closed Issues", value: props.closed, status: "CLOSED" },
   ];
 
   return (
-    <Flex gap="5">
+    <Flex justify="center" gap="5">
       {issueStatusContainer.map((status) => (
         <Card key={status.label}>
           <Flex direction="column" gap="2">

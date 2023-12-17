@@ -5,6 +5,7 @@ import IssuesTable, { IssueSearchParams, columnValue } from "./IssuesTable";
 import IssuesToolbar from "./IssuesToolbar";
 import { Flex } from "@radix-ui/themes";
 import { Metadata } from "next";
+import { User } from "@prisma/client";
 
 interface IssuesPageProps {
   searchParams: IssueSearchParams;
@@ -13,6 +14,13 @@ interface IssuesPageProps {
 const IssuesPage = async ({ searchParams }: IssuesPageProps) => {
   const status = Object.values(Status).includes(searchParams.status)
     ? searchParams.status
+    : undefined;
+
+  const isValidObjectId = (id: string) => /^[0-9a-fA-F]{24}$/.test(id);
+  const assignedToUserId: User["id"] | null | undefined = isValidObjectId(
+    searchParams.assignee
+  )
+    ? searchParams.assignee
     : undefined;
 
   const orderBy = columnValue.includes(searchParams.orderBy)
@@ -27,6 +35,7 @@ const IssuesPage = async ({ searchParams }: IssuesPageProps) => {
   const issues = await prisma.issue.findMany({
     where: {
       status,
+      assignedToUserId,
     },
     orderBy,
     skip: (page - 1) * pageSize,

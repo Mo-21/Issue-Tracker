@@ -14,6 +14,8 @@ export const patchIssueSchema = z.object({
     .max(255)
     .optional()
     .nullable(),
+
+  status: z.string().min(1, "Status is Required").max(255).optional(),
 });
 
 export const registerSchema = z.object({

@@ -2,6 +2,8 @@
 
 This project is a full-stack web application that allows users to create, manage and track issues (tickets). It is built with Next.js with TypeScript. The project uses MongoDB with Prisma, and styled using RadixUI, a low-level UI component library for React, to create the user interface. The project also uses NextAuth, a library that simplifies authentication for Next.js applications, with two strategies, Google and Credentials.
 
+[Live Preview](https://issue-tracker-flax.vercel.app/)
+
 ![main-page](./public/issues_list.png)
 ![issue-page](./public/issue_main.png)
 

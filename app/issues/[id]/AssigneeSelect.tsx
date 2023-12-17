@@ -17,6 +17,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     axios
       .patch("/api/issues/" + issue.id, {
         assignedToUserId: userId === "unassigned" ? null : userId,
+        status: "IN_PROGRESS"
       })
       .catch(() => {
         toast.error("Failed to assign ticket");

@@ -5,6 +5,7 @@ import { Select } from "@radix-ui/themes";
 import React from "react";
 import { useUsers } from "../services/useUsers";
 import { useRouter, useSearchParams } from "next/navigation";
+import { handleValueChange } from "../services/handleFilterValueChange";
 
 const AssigneeFilter = () => {
   const { data: users, error, isLoading } = useUsers();
@@ -15,16 +16,17 @@ const AssigneeFilter = () => {
   if (isLoading) return <Skeleton />;
   if (error) return null;
 
-  const onValueChange = (value: string) => {
-    const params = new URLSearchParams();
-    if (value) params.append("assignee", value);
-    if (searchParams.get("status"))
-      params.append("status", searchParams.get("status")!);
-    if (searchParams.get("orderBy"))
-      params.append("orderBy", searchParams.get("orderBy")!);
+  const onValueChange = (assignee: string) => {
+    const paramsToAppend = {
+      assignee,
+      status: searchParams.get("status"),
+      orderBy: searchParams.get("orderBy"),
+    };
 
-    const query = params.size ? "?" + params.toString() : "all";
-    router.push(`/issues/list/${query}`);
+    handleValueChange({
+      router,
+      paramsToAppend,
+    });
   };
 
   return (

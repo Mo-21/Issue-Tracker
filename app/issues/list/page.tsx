@@ -48,6 +48,7 @@ const IssuesPage = async ({ searchParams }: IssuesPageProps) => {
   const itemCount = await prisma.issue.count({
     where: {
       status,
+      assignedToUserId,
     },
   });
 
